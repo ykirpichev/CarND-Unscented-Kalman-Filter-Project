@@ -45,7 +45,7 @@ int main()
 
     if (length && length > 2 && data[0] == '4' && data[1] == '2')
     {
-
+        std::cout << data << std::endl;
       auto s = hasData(std::string(data));
       if (s != "") {
       	
