@@ -67,7 +67,10 @@ public:
     ///* Sigma point spreading parameter
     double lambda_;
 
+    // radar measerement covariance matrix
     MatrixXd R_radar_;
+
+    // lidar measerement covariance matrix
     MatrixXd R_lidar_;
     /**
      * Constructor
@@ -107,8 +110,16 @@ public:
     MatrixXd AugmentedSigmaPoints();
     MatrixXd SigmaPointPrediction(const MatrixXd& Xsig_aug, double delat_t);
     void PredictMeanAndCovariance();
-    void PredictRadarMeasurement(VectorXd* z_out, MatrixXd* S_out, MatrixXd* Zsig_out);
     void UpdateState(const MatrixXd& Zsig, const VectorXd& z_pred, const MatrixXd& S, const VectorXd& z);
+
+    void NormalizeAngle(double& angle) {
+        while (angle > M_PI) angle -= 2.*M_PI;
+        while (angle < -M_PI) angle += 2.*M_PI;
+    }
+
+    MatrixXd PredictRadarSigmapoints();
+    MatrixXd PredictLidarSigmapoints();
+    void PredictZMeanAndCovariance(const MatrixXd& Zsig, VectorXd* z_out, MatrixXd* S_out);
 };
 
 #endif /* UKF_H */
