@@ -174,8 +174,8 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
     VectorXd z = meas_package.raw_measurements_;
     UpdateState(Zsig, z_pred, S, z);
 
-    NIS_lidar_ = z.transpose() * S.inverse() * z;
-    std::cout << "Current NIS for lidar: " << NIS_lidar_ << std::endl;
+    NIS_laser_ = z.transpose() * S.inverse() * z;
+    std::cout << "Current NIS for lidar: " << NIS_laser_ << std::endl;
 }
 
 /**

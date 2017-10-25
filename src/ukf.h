@@ -77,7 +77,7 @@ public:
     double NIS_radar_;
 
     ///* the current NIS for lidar
-    double NIS_lidar_;
+    double NIS_laser_;
 
     /**
      * Constructor
