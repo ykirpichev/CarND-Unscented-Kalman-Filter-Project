@@ -160,9 +160,6 @@ void UKF::Prediction(double delta_t) {
  * @param {MeasurementPackage} meas_package
  */
 void UKF::UpdateLidar(MeasurementPackage meas_package) {
-    /**
-    You'll also need to calculate the lidar NIS.
-    */
     MatrixXd Zsig = PredictLidarSigmapoints();
 
     VectorXd z_pred;
@@ -174,7 +171,7 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
     VectorXd z = meas_package.raw_measurements_;
     UpdateState(Zsig, z_pred, S, z);
 
-    NIS_laser_ = z.transpose() * S.inverse() * z;
+    NIS_laser_ = CalculateNIS(z, z_pred, S);
     std::cout << "Current NIS for lidar: " << NIS_laser_ << std::endl;
 }
 
@@ -183,9 +180,6 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
  * @param {MeasurementPackage} meas_package
  */
 void UKF::UpdateRadar(MeasurementPackage meas_package) {
-    /**
-    You'll also need to calculate the radar NIS.
-    */
     MatrixXd Zsig = PredictRadarSigmapoints();
 
     VectorXd z_pred;
@@ -197,7 +191,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
     VectorXd z = meas_package.raw_measurements_;
     UpdateState(Zsig, z_pred, S, z);
 
-    NIS_radar_ = z.transpose() * S.inverse() * z;
+    NIS_radar_ = CalculateNIS(z, z_pred, S);
     std::cout << "Current NIS for radar: " << NIS_radar_ << std::endl;
 }
 

@@ -115,18 +115,28 @@ public:
     void UpdateRadar(MeasurementPackage meas_package);
 
     MatrixXd AugmentedSigmaPoints();
+
     MatrixXd SigmaPointPrediction(const MatrixXd& Xsig_aug, double delat_t);
+
     void PredictMeanAndCovariance();
+
+    void PredictZMeanAndCovariance(const MatrixXd& Zsig, VectorXd* z_out, MatrixXd* S_out);
+
+    MatrixXd PredictRadarSigmapoints();
+    MatrixXd PredictLidarSigmapoints();
+
     void UpdateState(const MatrixXd& Zsig, const VectorXd& z_pred, const MatrixXd& S, const VectorXd& z);
+
+    // calculate normalized innovation squared
+    double CalculateNIS(const VectorXd& z, const VectorXd& z_pred, const MatrixXd& S) {
+        VectorXd z_diff = z - z_pred;
+        return z_diff.transpose() * S.inverse() * z_diff;
+    }
 
     void NormalizeAngle(double& angle) {
         while (angle > M_PI) angle -= 2.*M_PI;
         while (angle < -M_PI) angle += 2.*M_PI;
     }
-
-    MatrixXd PredictRadarSigmapoints();
-    MatrixXd PredictLidarSigmapoints();
-    void PredictZMeanAndCovariance(const MatrixXd& Zsig, VectorXd* z_out, MatrixXd* S_out);
 };
 
 #endif /* UKF_H */
