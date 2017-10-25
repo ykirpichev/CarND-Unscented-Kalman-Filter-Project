@@ -127,7 +127,7 @@ public:
 
     void UpdateState(const MatrixXd& Zsig, const VectorXd& z_pred, const MatrixXd& S, const VectorXd& z);
 
-    // calculate normalized innovation squared
+    // calculate normalized innovation squared (should be less than 7.8 in 95 percents)
     double CalculateNIS(const VectorXd& z, const VectorXd& z_pred, const MatrixXd& S) {
         VectorXd z_diff = z - z_pred;
         return z_diff.transpose() * S.inverse() * z_diff;
