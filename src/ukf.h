@@ -72,6 +72,13 @@ public:
 
     // lidar measerement covariance matrix
     MatrixXd R_lidar_;
+
+    ///* the current NIS for radar
+    double NIS_radar_;
+
+    ///* the current NIS for lidar
+    double NIS_lidar_;
+
     /**
      * Constructor
      */

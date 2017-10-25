@@ -169,7 +169,13 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
     MatrixXd S;
     PredictZMeanAndCovariance(Zsig, &z_pred, &S);
 
-    UpdateState(Zsig, z_pred, S + R_lidar_, meas_package.raw_measurements_);
+    S = S + R_lidar_;
+
+    VectorXd z = meas_package.raw_measurements_;
+    UpdateState(Zsig, z_pred, S, z);
+
+    NIS_lidar_ = z.transpose() * S.inverse() * z;
+    std::cout << "Current NIS for lidar: " << NIS_lidar_ << std::endl;
 }
 
 /**
@@ -186,7 +192,13 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
     MatrixXd S;
     PredictZMeanAndCovariance(Zsig, &z_pred, &S);
 
-    UpdateState(Zsig, z_pred, S + R_radar_, meas_package.raw_measurements_);
+    S = S + R_radar_;
+
+    VectorXd z = meas_package.raw_measurements_;
+    UpdateState(Zsig, z_pred, S, z);
+
+    NIS_radar_ = z.transpose() * S.inverse() * z;
+    std::cout << "Current NIS for radar: " << NIS_radar_ << std::endl;
 }
 
 MatrixXd UKF::AugmentedSigmaPoints() {
